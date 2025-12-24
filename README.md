@@ -24,6 +24,7 @@ It scans a source directory (e.g., your **Downloads** folder), classifies files 
   - **FileWatcher** → Lists files in a directory  
   - **FileClassifier** → Determines file type & date subfolder  
   - **FileMover** → Moves files safely into the target folder  
+  - **PathInput** → Interactive path prompts & validation for source/target paths  
 
 ---
 
@@ -47,14 +48,12 @@ g++ -std=c++17 -o AutoRelay src/*.cpp
 
 ## Usage  
 
-Currently, you must **set your source and target paths in the code** before compiling.  
+By default the program prompts you at runtime for the **SOURCE** and **TARGET** directory paths using `PathInput`. If you prefer, you can still set the paths in `main.cpp` before compiling.  
 
-In `main.cpp`:  
-```cpp
-int main() {
-    // Change these paths as per your system
-    std::string sourceDir = "C:\\Users\\KIIT\\Downloads"; // Source directory
-    std::string targetRoot = "C:\\Dwn";                   // Target root directory
+Example run (program prompts):
+```
+Enter SOURCE directory path: C:\Users\KIIT\Downloads
+Enter TARGET directory path: C:\Dwn
 ```
 
 - Update `sourceDir` and `targetRoot`  
@@ -89,6 +88,7 @@ AutoRelay/
  │   ├── FileClassifier.cpp / .h
  │   ├── FileMover.cpp / .h
  │   ├── FileWatcher.cpp / .h
+ │   ├── PathInput.cpp / .h
  │   └── main.cpp
  ├── .vscode/
  └── AutoRelay.exe   (built binary)
