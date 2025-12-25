@@ -19,12 +19,13 @@ It scans a source directory (e.g., your **Downloads** folder), classifies files 
 - Classifies files by type (PDF, DOC, IMG, VIDEO, EXE, ZIP, etc.)  
 - Sorts into **year-month subfolders** based on last modified date  
 - Prevents overwriting (renames duplicates automatically)  
+- Supports **both command-line arguments and interactive mode**  
 - Simple one-shot execution — just run the exe to organize your files  
 - Clean modular C++17 design:  
   - **FileWatcher** → Lists files in a directory  
   - **FileClassifier** → Determines file type & date subfolder  
   - **FileMover** → Moves files safely into the target folder  
-  - **PathInput** → Interactive path prompts & validation for source/target paths  
+  - **PathInput** → Interactive path prompts & validation  
 
 ---
 
@@ -32,37 +33,62 @@ It scans a source directory (e.g., your **Downloads** folder), classifies files 
 
 ### Prerequisites  
 - C++17 or newer  
-- CMake (optional, for easier building)  
+- CMake (optional)  
 
 ### Compile with g++  
 ```bash
 g++ -std=c++17 -o AutoRelay src/*.cpp
-```
-
-### Run  
-```bash
-./AutoRelay
-```
+````
 
 ---
 
-## Usage  
+## Usage
 
-By default the program prompts you at runtime for the **SOURCE** and **TARGET** directory paths using `PathInput`. If you prefer, you can still set the paths in `main.cpp` before compiling.  
+AutoRelay supports **two modes of operation**.
 
-Example run (program prompts):
+---
+
+### 1️ Argument Mode (Power-user / Script friendly)
+
+Provide source and target paths directly:
+
+```bash
+AutoRelay.exe <source_path> <target_path>
+```
+
+Example:
+
+```bash
+AutoRelay.exe "C:\Users\KIIT\Downloads" "C:\Dwn"
+```
+
+> **Note (Windows):** If a path contains spaces, it must be enclosed in double quotes.
+
+---
+
+### 2️ Interactive Mode (Default)
+
+If no arguments are provided, AutoRelay prompts you at runtime:
+
+```bash
+AutoRelay.exe
+```
+
+Example prompt:
+
 ```
 Enter SOURCE directory path: C:\Users\KIIT\Downloads
 Enter TARGET directory path: C:\Dwn
 ```
 
-- Update `sourceDir` and `targetRoot`  
-- Compile  
-- Run the generated `AutoRelay.exe`  
+---
 
-Each time you run the executable, your files will be reorganized into structured folders.  
+Each time you run the executable, your files will be reorganized into structured folders.
 
-Example output structure:  
+---
+
+## Example Output Structure
+
 ```
 C:\Dwn\
    ├── PDF\
@@ -80,7 +106,7 @@ C:\Dwn\
 
 ---
 
-## Project Structure  
+## Project Structure
 
 ```
 AutoRelay/
@@ -91,20 +117,22 @@ AutoRelay/
  │   ├── PathInput.cpp / .h
  │   └── main.cpp
  ├── .vscode/
- └── AutoRelay.exe   (built binary)
+ └── AutoRelay.exe
 ```
 
 ---
 
-## Future Improvements  
+## Future Improvements
 
-- Accept **command-line arguments** (`AutoRelay.exe <sourceDir> <targetDir>`)  
-- Config file support (set paths and mappings without editing code)  
-- Continuous monitoring (true “auto-relay” behavior)  
-- Cross-platform compatibility (Linux/macOS paths)  
+* Config file support
+* Continuous monitoring (true “auto-relay” behavior)
+* Cross-platform compatibility (Linux/macOS paths)
+* Unified CLI conventions across multiple tools
 
 ---
 
-## License  
+## License
 
-This project is licensed under the MIT License.  
+This project is licensed under the MIT License.
+
+```
