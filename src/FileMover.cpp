@@ -26,7 +26,7 @@ void FileMover::moveFile(const fs::path& source, const fs::path& targetDirectory
 
         fs::rename(source, targetPath);
 
-        std::cout << "Moved: " << source << " → " << targetPath << std::endl;
+        std::cout << "Moved: " << source << " to " << targetPath << std::endl;
 
     } catch (const std::exception& e) {
         std::cerr << "Error moving file " << source << ": " << e.what() << std::endl;
