@@ -19,8 +19,9 @@ It scans a source directory (e.g., your **Downloads** folder), classifies files 
 - Classifies files by type (PDF, DOC, IMG, VIDEO, EXE, ZIP, etc.)  
 - Sorts into **year-month subfolders** based on last modified date  
 - Prevents overwriting (renames duplicates automatically)  
+- Safe to run from inside the folder being organized -AutoRelay excludes its own executable  
 - Supports **both command-line arguments and interactive mode**  
-- Simple one-shot execution — just run the exe to organize your files  
+- Simple one-shot execution -just run the exe to organize your files  
 - Clean modular C++17 design:  
   - **FileWatcher** → Lists files in a directory  
   - **FileClassifier** → Determines file type & date subfolder  
@@ -33,12 +34,19 @@ It scans a source directory (e.g., your **Downloads** folder), classifies files 
 
 ### Prerequisites  
 - C++17 or newer  
-- CMake (optional)  
+- CMake 3.15+ (recommended)  
 
-### Compile with g++  
+### Build with CMake (recommended)
+```bash
+cmake -B build
+cmake --build build
+```
+The binary will be at `build/AutoRelay` (or `build/AutoRelay.exe` on Windows). CMake generates the right build files for your platform -Unix Makefiles on Linux/macOS, or a Visual Studio solution on Windows -from the same `CMakeLists.txt`.
+
+### Or compile directly with g++
 ```bash
 g++ -std=c++17 -o AutoRelay src/*.cpp
-````
+```
 
 ---
 
@@ -106,27 +114,44 @@ C:\Dwn\
 
 ---
 
+## Testing
+
+A manual test harness lives in `tests/`. It copies a set of fixture files (covering every classification bucket) into a scratch sandbox, runs AutoRelay against it, and prints the resulting tree -useful for confirming behavior after any change without touching real files.
+
+```bash
+cd tests
+./run_manual_test.sh              # fresh run; also verifies the self-move exclusion
+./run_manual_test.sh --no-reset   # re-run without wiping the target, to test duplicate-name handling
+```
+
+`tests/sandbox/` is generated and gitignored -only `tests/fixtures/` and the script itself are tracked.
+
+---
+
 ## Project Structure
 
 ```
 AutoRelay/
+ ├── CMakeLists.txt
  ├── src/
  │   ├── FileClassifier.cpp / .h
  │   ├── FileMover.cpp / .h
  │   ├── FileWatcher.cpp / .h
  │   ├── PathInput.cpp / .h
  │   └── main.cpp
- ├── .vscode/
- └── AutoRelay.exe
+ └── tests/
+     ├── fixtures/
+     └── run_manual_test.sh
 ```
 
 ---
 
 ## Future Improvements
 
-* Config file support
+* Config file support for the type→folder mapping
 * Continuous monitoring (true “auto-relay” behavior)
-* Cross-platform compatibility (Linux/macOS paths)
+* Automated unit tests (current harness in `tests/` is manual/integration-only)
+* Packaged release binaries for Linux/macOS/Windows
 * Unified CLI conventions across multiple tools
 
 ---
