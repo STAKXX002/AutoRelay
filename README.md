@@ -1,18 +1,11 @@
 # AutoRelay  
 
-**GitHub Description:**  
-Automated file organizer that classifies files by type and date into structured folders. Run the executable to clean up your directories.  
-
----
-
 ## Overview  
 
 **AutoRelay** is a lightweight C++ application that automatically organizes your files **when you run it**.  
 It scans a source directory (e.g., your **Downloads** folder), classifies files by their **type** (PDF, DOC, IMG, VIDEO, EXE, ZIP, etc.), and moves them into a target root directory. Inside the target, files are neatly arranged by **file type** and further sorted into **date-based subfolders (YYYY-MM)**.  
 
 **Note:** AutoRelay is not a background service. You need to manually run the executable each time you want to organize files.  
-
----
 
 ## Features  
 
@@ -27,8 +20,6 @@ It scans a source directory (e.g., your **Downloads** folder), classifies files 
   - **FileClassifier** → Determines file type & date subfolder  
   - **FileMover** → Moves files safely into the target folder  
   - **PathInput** → Interactive path prompts & validation  
-
----
 
 ## Build Instructions  
 
@@ -48,13 +39,9 @@ The binary will be at `build/AutoRelay` (or `build/AutoRelay.exe` on Windows). C
 g++ -std=c++17 -o AutoRelay src/*.cpp
 ```
 
----
-
 ## Usage
 
 AutoRelay supports **two modes of operation**.
-
----
 
 ### 1️ Argument Mode (Power-user / Script friendly)
 
@@ -72,8 +59,6 @@ AutoRelay.exe "C:\Users\KIIT\Downloads" "C:\Dwn"
 
 > **Note (Windows):** If a path contains spaces, it must be enclosed in double quotes.
 
----
-
 ### 2️ Interactive Mode (Default)
 
 If no arguments are provided, AutoRelay prompts you at runtime:
@@ -89,11 +74,7 @@ Enter SOURCE directory path: C:\Users\KIIT\Downloads
 Enter TARGET directory path: C:\Dwn
 ```
 
----
-
 Each time you run the executable, your files will be reorganized into structured folders.
-
----
 
 ## Example Output Structure
 
@@ -112,8 +93,6 @@ C:\Dwn\
              └── lecture.mp4
 ```
 
----
-
 ## Testing
 
 A manual test harness lives in `tests/`. It copies a set of fixture files (covering every classification bucket) into a scratch sandbox, runs AutoRelay against it, and prints the resulting tree -useful for confirming behavior after any change without touching real files.
@@ -125,8 +104,6 @@ cd tests
 ```
 
 `tests/sandbox/` is generated and gitignored -only `tests/fixtures/` and the script itself are tracked.
-
----
 
 ## Project Structure
 
@@ -144,8 +121,6 @@ AutoRelay/
      └── run_manual_test.sh
 ```
 
----
-
 ## Future Improvements
 
 * Config file support for the type→folder mapping
@@ -154,10 +129,3 @@ AutoRelay/
 * Packaged release binaries for Linux/macOS/Windows
 * Unified CLI conventions across multiple tools
 
----
-
-## License
-
-This project is licensed under the MIT License.
-
-```
