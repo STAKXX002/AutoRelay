@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <filesystem>
 #include "FileWatcher.h"
@@ -31,6 +32,18 @@ int main(int argc, char* argv[]) {
 
     std::vector<std::filesystem::path> files =
         FileWatcher::getFiles(sourceDir.string());
+
+    try {
+        std::filesystem::path selfPath = std::filesystem::canonical(argv[0]);
+        files.erase(
+            std::remove_if(files.begin(), files.end(),
+                [&](const std::filesystem::path& f) {
+                    return std::filesystem::canonical(f) == selfPath;
+                }),
+            files.end());
+    } catch (const std::exception&) {
+        // If argv[0] can't be resolved (e.g. unusual invocation), skip the check.
+    }
 
     for (const auto& file : files) {
         if (std::filesystem::is_directory(file)) continue;
