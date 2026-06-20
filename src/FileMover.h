@@ -2,10 +2,16 @@
 #define FILEMOVER_H
 
 #include <filesystem>
+#include <string>
+
+struct MoveResult {
+    bool success;
+    std::string errorMessage; // empty when success is true
+};
 
 class FileMover {
 public:
-    static void moveFile(const std::filesystem::path& source, const std::filesystem::path& targetDirectory);
+    static MoveResult moveFile(const std::filesystem::path& source, const std::filesystem::path& targetDirectory);
 };
 
 #endif // FILEMOVER_H

@@ -15,6 +15,7 @@ add_executable(AutoRelay
     src/FileClassifier.cpp
     src/FileMover.cpp
     src/PathInput.cpp
+    src/ProgressBar.cpp
 )
 
 target_compile_options(AutoRelay PRIVATE

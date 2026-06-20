@@ -1,10 +1,9 @@
 #include "FileMover.h"
-#include <iostream>
 #include <filesystem>
 
 namespace fs = std::filesystem;
 
-void FileMover::moveFile(const fs::path& source, const fs::path& targetDirectory) {
+MoveResult FileMover::moveFile(const fs::path& source, const fs::path& targetDirectory) {
     try {
         if (!fs::exists(targetDirectory)) {
             fs::create_directories(targetDirectory);
@@ -25,10 +24,9 @@ void FileMover::moveFile(const fs::path& source, const fs::path& targetDirectory
         }
 
         fs::rename(source, targetPath);
-
-        std::cout << "Moved: " << source << " to " << targetPath << std::endl;
+        return {true, ""};
 
     } catch (const std::exception& e) {
-        std::cerr << "Error moving file " << source << ": " << e.what() << std::endl;
+        return {false, e.what()};
     }
 }
