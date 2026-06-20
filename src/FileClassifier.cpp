@@ -7,8 +7,7 @@
 namespace fs = std::filesystem;
 
 std::string FileClassifier::getFileType(const fs::path& filePath) {
-    std::string ext = filePath.extension().string();
-    std::map<std::string, std::string> extensionMap = {
+    static const std::map<std::string, std::string> extensionMap = {
         {".pdf", "PDF"},
         {".zip", "ZIP"},
         {".rar", "ZIP"},
@@ -25,13 +24,13 @@ std::string FileClassifier::getFileType(const fs::path& filePath) {
         {".pptx", "DOC"}
     };
 
+    std::string ext = filePath.extension().string();
+
     // Normalize to lowercase
     for (auto& ch : ext) ch = std::tolower(ch);
 
-    if (extensionMap.count(ext))
-        return extensionMap[ext];
-    else
-        return "OTHER";
+    auto it = extensionMap.find(ext);
+    return (it != extensionMap.end()) ? it->second : "OTHER";
 }
 
 std::string FileClassifier::getDateSubfolder(const fs::path& filePath) {
