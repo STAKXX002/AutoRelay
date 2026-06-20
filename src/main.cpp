@@ -17,10 +17,10 @@ int main(int argc, char* argv[]) {
         sourceDir = argv[1];
         targetRoot = argv[2];
 
-        if (!std::filesystem::exists(sourceDir)) {
-            std::cerr << "Error: Source directory does not exist.\n";
-            return 1;
-        }
+         if (!std::filesystem::is_directory(sourceDir)) {
+             std::cerr << "Error: Source directory does not exist.\n";
+             return 1;
+         }
 
     } else if (argc == 1) {
         sourceDir = PathInput::getSourcePath();
