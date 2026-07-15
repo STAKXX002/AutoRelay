@@ -4,11 +4,7 @@
 
 namespace fs = std::filesystem;
 
-namespace {
-
-// Trims surrounding whitespace and, if present, one matching pair of quotes
-// (common when pasting a path copied via "Copy as path" on Windows).
-std::string sanitize(const std::string& raw) {
+std::string PathInput::sanitize(const std::string& raw) {
     static const char* whitespace = " \t\r\n";
 
     std::size_t start = raw.find_first_not_of(whitespace);
@@ -27,8 +23,6 @@ std::string sanitize(const std::string& raw) {
     return trimmed;
 }
 
-} // namespace
-
 static fs::path getValidPath(const std::string& prompt, bool mustExist) {
     while (true) {
         std::cout << prompt;
@@ -42,7 +36,7 @@ static fs::path getValidPath(const std::string& prompt, bool mustExist) {
             std::exit(1);
         }
 
-        input = sanitize(input);
+        input = PathInput::sanitize(input);
 
         if (input.empty()) {
             std::cout << " Path cannot be empty. Try again.\n";
