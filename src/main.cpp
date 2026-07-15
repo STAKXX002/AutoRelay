@@ -14,8 +14,11 @@ int main(int argc, char* argv[]) {
     std::filesystem::path targetRoot;
 
     if (argc == 3) {
-        sourceDir = argv[1];
-        targetRoot = argv[2];
+        // Apply the same trimming/quote-stripping as interactive mode --
+        // argv paths can arrive quoted or padded with whitespace when a
+        // wrapper (script, GUI subprocess call) builds the command line.
+        sourceDir = PathInput::sanitize(argv[1]);
+        targetRoot = PathInput::sanitize(argv[2]);
 
          if (!std::filesystem::is_directory(sourceDir)) {
              std::cerr << "Error: Source directory does not exist.\n";
@@ -31,6 +34,40 @@ int main(int argc, char* argv[]) {
                   << "  AutoRelay <source_path> <target_path>\n"
                   << "  AutoRelay                (interactive mode)\n";
         return 1;
+    }
+
+    // Preflight: make sure the target root can actually be created/written
+    // to before we start moving files. Without this, a bad target path only
+    // surfaces as the same "failed to move" error repeated once per file.
+    {
+        std::error_code ec;
+        std::filesystem::create_directories(targetRoot, ec);
+        if (ec) {
+            std::cerr << "Error: Cannot create or access target directory '"
+                      << targetRoot.string() << "': " << ec.message() << "\n";
+            return 1;
+        }
+    }
+
+    // Warn (but don't block) if target is the same as, or nested inside,
+    // source -- this still works since file listing is non-recursive and
+    // captured up front, but produces folder structure inside the very
+    // directory being organized, which is easy to mistake for a bug.
+    {
+        std::error_code ec;
+        std::filesystem::path canonicalSource = std::filesystem::weakly_canonical(sourceDir, ec);
+        std::filesystem::path canonicalTarget = ec ? targetRoot
+            : std::filesystem::weakly_canonical(targetRoot, ec);
+
+        if (!ec) {
+            std::filesystem::path rel = canonicalTarget.lexically_relative(canonicalSource);
+            bool sameOrNested = !rel.empty() && *rel.begin() != "..";
+            if (sameOrNested) {
+                std::cerr << "Warning: Target directory is the same as, or inside, "
+                             "the source directory. Organized subfolders will be "
+                             "created inside the folder being scanned.\n";
+            }
+        }
     }
 
     std::vector<std::filesystem::path> files =
