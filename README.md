@@ -54,7 +54,7 @@ AutoRelay.exe <source_path> <target_path>
 Example:
 
 ```bash
-AutoRelay.exe "C:\Users\KIIT\Downloads" "C:\Dwn"
+AutoRelay.exe "C:\Users\ABC\Downloads" "C:\Dwn"
 ```
 
 > **Note (Windows):** If a path contains spaces, it must be enclosed in double quotes.
@@ -70,7 +70,7 @@ AutoRelay.exe
 Example prompt:
 
 ```
-Enter SOURCE directory path: C:\Users\KIIT\Downloads
+Enter SOURCE directory path: C:\Users\ABC\Downloads
 Enter TARGET directory path: C:\Dwn
 ```
 
