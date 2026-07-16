@@ -3,6 +3,7 @@
 #include <chrono>
 #include <sstream>
 #include <iomanip>
+#include <cctype>
 
 namespace fs = std::filesystem;
 
@@ -26,8 +27,13 @@ std::string FileClassifier::getFileType(const fs::path& filePath) {
 
     std::string ext = filePath.extension().string();
 
-    // Normalize to lowercase
-    for (auto& ch : ext) ch = std::tolower(ch);
+    // Normalize to lowercase. std::tolower's behavior is only defined for
+    // values representable as unsigned char (or EOF) -- passing a plain
+    // (possibly signed) char with the high bit set is undefined behavior,
+    // so cast through unsigned char first.
+    for (auto& ch : ext) {
+        ch = static_cast<char>(std::tolower(static_cast<unsigned char>(ch)));
+    }
 
     auto it = extensionMap.find(ext);
     return (it != extensionMap.end()) ? it->second : "OTHER";
